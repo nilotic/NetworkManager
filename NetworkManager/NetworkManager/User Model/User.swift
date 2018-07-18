@@ -46,6 +46,18 @@ extension User {
             
         } catch { throw DecodingError.keyNotFound(Key.id, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Failed to get the userInfo.")) }
       
-        do { createdDate = ISO8601DateFormatter().date(from: try values.decode(String.self, forKey: .createdDate)) } catch {}
+        do {
+            var string = try values.decode(String.self, forKey: .createdDate)
+            
+            let formatter = ISO8601DateFormatter()
+            if #available(iOS 11.0, *) {
+                formatter.formatOptions = [.withInternetDateTime, .withDashSeparatorInDate, .withColonSeparatorInTime, .withFractionalSeconds, .withTimeZone]
+                
+            } else {
+                string = string.replacingOccurrences(of: "\\.\\d+", with: "", options: .regularExpression)
+            }
+            
+            createdDate = formatter.date(from: string)
+        } catch {}
     }
 }
