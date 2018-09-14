@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-let host = URL(string: "https://")!
+let host = URL(string: "https://ec2clinic.havit.io/graphqlBeauty")!
 
 
 extension URLRequest {
